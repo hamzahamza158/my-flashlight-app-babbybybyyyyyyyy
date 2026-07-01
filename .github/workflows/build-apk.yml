@@ -47,8 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Hamza-Flashlight-App
-          # 🚀 التحديث القاطع: جعل البحث ذكياً وشاملاً ليلتقط الـ APK من أي مسار فرعي يولده Flet
+          # 🚀 FIX: Targets your custom renamed binary to resolve the missing artifact issue!
           path: |
-            build/apk/app-release.apk
-            build/app/outputs/flutter-apk/app-release.apk
-            **/app-release.apk
+            build/apk/flash-app.apk
+            **/flash-app.apk
