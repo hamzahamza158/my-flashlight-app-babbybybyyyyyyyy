@@ -1,4 +1,4 @@
-name: Build Flet Android APK (Fast Fix)
+name: Build Flet Android APK (Ultimate Anti-Error)
 
 on:
   push:
@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      # 🔍 خطوة سحرية للتحقق: ستطبع لنا في الـ Logs مكان ملف main.py بالضبط إذا كان تائهاً
+      - name: Find and Verify main.py Location
+        run: |
+          echo "=== Searching for main.py inside the project ==="
+          find . -name "main.py" -o -name "Main.py"
+          echo "================================================"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -38,8 +45,18 @@ jobs:
           flutter-version: '3.41.7'
           cache: true
 
+      # 🚀 الحل النهائي: نقوم بإنشاء نسخة مضمونة من ملف main.py في الجذور قبل تشغيل أمر البناء
+      - name: Force Ensure main.py is in Root
+        run: |
+          TARGET_FILE=$(find . -name "main.py" -o -name "Main.py" | head -n 1)
+          if [ -n "$TARGET_FILE" ]; then
+            echo "Found main.py at $TARGET_FILE. Copying to root to destroy Flet error..."
+            cp "$TARGET_FILE" ./main.py
+          else
+            echo "CRITICAL WARNING: main.py completely missing from repository!"
+          fi
+
       - name: Build Android APK
-        # 🚀 التعديل الجذري: تشغيل أمر flet مباشرة دون استخدام وسيط python -m مع ضبط نقطة الدخول يدوياً
         run: |
           flutter config --no-analytics
           flet build apk --permissions camera --verbose
