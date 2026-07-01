@@ -41,7 +41,8 @@ jobs:
       - name: Build Android APK
         run: |
           flutter config --no-analytics
-          flet build apk --module-name main --permissions camera --verbose
+          # 🚀 FIX: Added the context dot "." and specified "main.py" explicitly
+          flet build apk . --module-name main.py --permissions camera --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
