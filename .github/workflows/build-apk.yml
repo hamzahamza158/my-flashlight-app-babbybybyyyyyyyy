@@ -14,14 +14,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # تحديث: إجبار الخادم على العمل من المجلد الرئيسي للمستودع مباشرة
-      - name: Verify Workspace Structure
-        run: |
-          echo "Current working directory:"
-          pwd
-          echo "Files in root directory:"
-          ls -la
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -47,10 +39,10 @@ jobs:
           cache: true
 
       - name: Build Android APK
-        # الحل الجذري: تحديد مسار تنفيذ الأمر بشكل مطلق وضمان استجابة المحرك التلقائية
+        # 🚀 التعديل الجذري: تشغيل أمر flet مباشرة دون استخدام وسيط python -m مع ضبط نقطة الدخول يدوياً
         run: |
           flutter config --no-analytics
-          python -m flet build apk . --module-name main --permissions camera --verbose
+          flet build apk --permissions camera --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
