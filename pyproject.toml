@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "Hamza Flashlight App"
 
 [tool.flet.app]
-path = "main.py"
+path = "."
 
 [tool.flet.android]
 package_name = "com.hamza.flash"
