@@ -1,0 +1,53 @@
+name: Build Flet Android APK
+
+on:
+  push:
+    branches:
+      - main  # Triggers the build every time you push code to the main branch
+  workflow_dispatch: # Allows you to manually click a button to build the app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download the code from your repository onto the runner
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. Install your app requirements
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Set up Java JDK required for compiling Android packages
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 5. Setup Flutter SDK (Flet relies on Flutter to generate the binary shell)
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # 6. Execute Flet's compile command to package the APK
+      - name: Build Android APK
+        run: |
+            flet build apk --permissions camera --verbose
+
+      # 7. Extract the generated .apk out of the runner environment so you can download it
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hamza-Flashlight-App
+          path: build/apk/app-release.apk
