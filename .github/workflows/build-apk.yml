@@ -14,13 +14,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # تحديث: إجبار الخادم على العمل من المجلد الرئيسي للمستودع مباشرة
+      - name: Verify Workspace Structure
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "Files in root directory:"
+          ls -la
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
 
-      # 🛠️ Fix: Ensure we match whatever package management tool gets fetched
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
@@ -40,10 +47,10 @@ jobs:
           cache: true
 
       - name: Build Android APK
+        # الحل الجذري: تحديد مسار تنفيذ الأمر بشكل مطلق وضمان استجابة المحرك التلقائية
         run: |
           flutter config --no-analytics
-          # 🚀 FIX: The dot "." MUST sit immediately right after "apk"
-          flet build apk . --module-name main.py --permissions camera --verbose
+          python -m flet build apk . --module-name main --permissions camera --verbose
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
