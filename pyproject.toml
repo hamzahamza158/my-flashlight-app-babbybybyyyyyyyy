@@ -1,0 +1,11 @@
+[project]
+name = "flash-app"
+version = "1.0.0"
+description = "Hamza Flashlight App"
+
+[tool.flet.app]
+path = "main.py"
+
+[tool.flet.android]
+package_name = "com.hamza.flash"
+app_title = "Hamza Flash 2026"
