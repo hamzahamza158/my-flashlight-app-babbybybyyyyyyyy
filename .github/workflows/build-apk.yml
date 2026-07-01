@@ -1,4 +1,4 @@
-name: Build Flet Android APK (Ultimate Anti-Error)
+name: Build Flet Android APK (Final Master Fix)
 
 on:
   push:
@@ -13,13 +13,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      # 🔍 خطوة سحرية للتحقق: ستطبع لنا في الـ Logs مكان ملف main.py بالضبط إذا كان تائهاً
-      - name: Find and Verify main.py Location
-        run: |
-          echo "=== Searching for main.py inside the project ==="
-          find . -name "main.py" -o -name "Main.py"
-          echo "================================================"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -45,20 +38,24 @@ jobs:
           flutter-version: '3.41.7'
           cache: true
 
-      # 🚀 الحل النهائي: نقوم بإنشاء نسخة مضمونة من ملف main.py في الجذور قبل تشغيل أمر البناء
-      - name: Force Ensure main.py is in Root
+      # 🚀 تعديل ذكي: التحقق من وجود الملف وتجنب نسخ الملف فوق نفسه لحل خطأ الـ cp
+      - name: Verify and Touch main.py
         run: |
-          TARGET_FILE=$(find . -name "main.py" -o -name "Main.py" | head -n 1)
-          if [ -n "$TARGET_FILE" ]; then
-            echo "Found main.py at $TARGET_FILE. Copying to root to destroy Flet error..."
-            cp "$TARGET_FILE" ./main.py
+          if [ -f "./main.py" ]; then
+            echo "main.py is exactly where it needs to be. Refreshing timestamp..."
+            touch ./main.py
           else
-            echo "CRITICAL WARNING: main.py completely missing from repository!"
+            echo "Searching for main.py elsewhere..."
+            TARGET_FILE=$(find . -name "main.py" -o -name "Main.py" | head -n 1)
+            if [ -n "$TARGET_FILE" ]; then
+              cp "$TARGET_FILE" ./main.py
+            fi
           fi
 
       - name: Build Android APK
         run: |
           flutter config --no-analytics
+          # تشغيل أمر البناء مع إجبار المحرك على رؤية المجلد الحالي كمصدر رئيسي ومستقل
           flet build apk --permissions camera --verbose
 
       - name: Upload APK Artifact
