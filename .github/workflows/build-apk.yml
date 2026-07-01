@@ -1,4 +1,4 @@
-name: Build Flet Android APK (Final Master Fix)
+name: Build Flet Android APK (Final Certified Fix)
 
 on:
   push:
@@ -38,24 +38,9 @@ jobs:
           flutter-version: '3.41.7'
           cache: true
 
-      # 🚀 تعديل ذكي: التحقق من وجود الملف وتجنب نسخ الملف فوق نفسه لحل خطأ الـ cp
-      - name: Verify and Touch main.py
-        run: |
-          if [ -f "./main.py" ]; then
-            echo "main.py is exactly where it needs to be. Refreshing timestamp..."
-            touch ./main.py
-          else
-            echo "Searching for main.py elsewhere..."
-            TARGET_FILE=$(find . -name "main.py" -o -name "Main.py" | head -n 1)
-            if [ -n "$TARGET_FILE" ]; then
-              cp "$TARGET_FILE" ./main.py
-            fi
-          fi
-
       - name: Build Android APK
         run: |
           flutter config --no-analytics
-          # تشغيل أمر البناء مع إجبار المحرك على رؤية المجلد الحالي كمصدر رئيسي ومستقل
           flet build apk --permissions camera --verbose
 
       - name: Upload APK Artifact
