@@ -49,3 +49,4 @@ jobs:
         with:
           name: Hamza-Flashlight-App
           path: build/apk/app-release.apk
+          
