@@ -20,6 +20,7 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
+      # 🛠️ Fix: Ensure we match whatever package management tool gets fetched
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
@@ -41,7 +42,7 @@ jobs:
       - name: Build Android APK
         run: |
           flutter config --no-analytics
-          # 🚀 FIX: Added the context dot "." and specified "main.py" explicitly
+          # 🚀 FIX: The dot "." MUST sit immediately right after "apk"
           flet build apk . --module-name main.py --permissions camera --verbose
 
       - name: Upload APK Artifact
@@ -49,4 +50,3 @@ jobs:
         with:
           name: Hamza-Flashlight-App
           path: build/apk/app-release.apk
-          
