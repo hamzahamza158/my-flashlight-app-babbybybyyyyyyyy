@@ -2,6 +2,14 @@
 name = "flash-app"
 version = "1.0.0"
 description = "Hamza Flashlight App"
+dependencies = [
+    "flet==0.85.3",
+    "flet-flashlight==0.85.3",
+    "flet-permission-handler==0.85.3",
+]
+
+[tool.flet]
+assets = "assets"
 
 [tool.flet.app]
 path = "."
