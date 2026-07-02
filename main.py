@@ -1,5 +1,4 @@
 from flet import *
-
 def main(page: Page):
     page.title = "Flash"
     page.scroll = "auto"
