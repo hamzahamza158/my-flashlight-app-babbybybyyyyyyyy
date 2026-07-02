@@ -40,9 +40,8 @@ jobs:
 
       - name: Build Android APK
         run: |
-          flutter config --no-analytics
-          flet build apk --permissions camera --verbose
-
+              flutter config --no-analytics
+              flet build apk --permissions camera --include-packages flet_flashlight,flet_permission_handler --verbose
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
