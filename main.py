@@ -10,36 +10,20 @@ def main(page: Page):
     page.bgcolor = Colors.WHITE
     page.theme_mode = ThemeMode.LIGHT
 
-    # Detect Android/iOS correctly
-    is_mobile = page.platform in [PagePlatform.ANDROID, PagePlatform.IOS]
+    fl = Flashlight()
+    ph = PermissionHandler()
 
-    if is_mobile:
-        fl = Flashlight()
-        ph = PermissionHandler()
-
-        page.overlay.append(fl)
-        page.overlay.append(ph)
-    else:
-        fl = None
-        ph = None
+    page.overlay.append(fl)
+    page.overlay.append(ph)
 
     def open_app(e):
-        if is_mobile:
-            ph.open_app_settings()
-        else:
-            print("Settings are only available on mobile.")
+        ph.open_app_settings()
 
     def turn_on_flash(e):
-        if is_mobile:
-            fl.turn_on()
-        else:
-            print("Flash ON (PC simulation)")
+        fl.turn_on()
 
     def turn_off_flash(e):
-        if is_mobile:
-            fl.turn_off()
-        else:
-            print("Flash OFF (PC simulation)")
+        fl.turn_off()
 
     page.appbar = AppBar(
         title=Text(
@@ -120,6 +104,5 @@ def main(page: Page):
     )
 
     page.update()
-
 
 app(main)
